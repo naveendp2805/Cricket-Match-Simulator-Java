@@ -1,4 +1,4 @@
-package Entity;
+package Entity.Team;
 
 public enum PlayerType {
 

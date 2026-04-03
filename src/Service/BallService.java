@@ -2,10 +2,9 @@ package Service;
 
 import Dto.BallResult;
 import Dto.OverResult;
-import Entity.Ball;
-import Entity.Over;
-import Entity.Player;
-import Entity.PlayerType;
+import Entity.Match.Ball;
+import Entity.Match.Over;
+import Entity.Team.Player;
 
 import java.util.List;
 
@@ -22,48 +21,71 @@ public class BallService {
         int totalRuns = 0;
         int wickets = 0;
 
-        for(Ball ball : over.getBalls())
-        {
+        for(Ball ball : over.getBalls()) {
             BallResult result = ball.getResult();
 
-            if(result.isNoBall() || result.isWide())
+            int batsmanRuns = result.getBatsmanRuns();
+            int runs = result.getTotalRuns();
+
+            totalRuns += runs;
+
+            if(result.isWide())
             {
-                totalRuns += result.getTotalRuns();
-                bowler.addRunsGiven(result.getExtraRuns());
-            }
-            else if(result.isWicket())
-            {
-                striker.addBall();
-                wickets++;
+                bowler.addExtraRuns(runs);
 
-                bowler.addBallBowled();
-                bowler.addWicket();
-
-                if(nextBatsmanIndex < batters.size())
-                    striker = batters.get(nextBatsmanIndex++);
-                else
-                    break;
-            }
-            else
-            {
-                int runs = result.getTotalRuns();
-
-                striker.addRuns(result.getBatsmanRuns());
-                striker.addBall();
-
-                bowler.addRunsGiven(runs);
-                bowler.addBallBowled();
-
-                totalRuns += runs;
-
-                if ((result.getBatsmanRuns() & 1) == 1)
+                if(runs % 2 == 1)
                 {
                     Player temp = striker;
                     striker = nonStriker;
                     nonStriker = temp;
                 }
+
+                continue;
             }
 
+            if(result.isNoBall())
+            {
+                bowler.addExtraRuns(runs);
+
+                if(batsmanRuns > 0)
+                    striker.addRunsOnly(batsmanRuns);
+
+                if(runs % 2 == 1)
+                {
+                    Player temp = striker;
+                    striker = nonStriker;
+                    nonStriker = temp;
+                }
+
+                continue;
+            }
+
+            bowler.addBowlingStats(runs, result.isWicket());
+
+            if(result.isWicket())
+            {
+                striker.facedDotBall();
+                wickets++;
+
+                striker.setDismissalInfo("b " + bowler.getName());
+
+                if(nextBatsmanIndex < batters.size())
+                    striker = batters.get(nextBatsmanIndex++);
+                else break;
+                continue;
+            }
+
+            if(batsmanRuns > 0)
+                striker.addBattingStats(batsmanRuns);
+            else
+                striker.facedDotBall();
+
+            if(runs % 2 == 1)
+            {
+                Player temp = striker;
+                striker = nonStriker;
+                nonStriker = temp;
+            }
         }
 
         Player temp = striker;

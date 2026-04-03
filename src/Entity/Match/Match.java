@@ -1,4 +1,6 @@
-package Entity;
+package Entity.Match;
+
+import Entity.Team.Team;
 
 public class Match {
 

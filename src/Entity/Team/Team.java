@@ -1,4 +1,4 @@
-package Entity;
+package Entity.Team;
 
 import java.util.List;
 

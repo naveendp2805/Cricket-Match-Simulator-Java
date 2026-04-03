@@ -1,10 +1,10 @@
 package Service;
 
 import Dto.BallResult;
-import Entity.Ball;
-import Entity.BallType;
-import Entity.Over;
-import Entity.Player;
+import Entity.Match.Ball;
+import Entity.Match.BallType;
+import Entity.Match.Over;
+import Entity.Team.Player;
 
 import java.util.*;
 

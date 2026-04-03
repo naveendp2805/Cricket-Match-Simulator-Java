@@ -1,4 +1,6 @@
-package Entity;
+package Entity.Match;
+
+import Entity.Team.Team;
 
 public class Innings {
 
@@ -8,7 +10,10 @@ public class Innings {
 
     private int totalRuns;
     private int wickets;
-    private int currentOver;
+    private int wides;
+    private int noBalls;
+
+    private int totalBalls;
 
     public Innings(Team battingTeam, Team bowlingTeam, int totalOvers) {
         this.battingTeam = battingTeam;
@@ -24,8 +29,16 @@ public class Innings {
         this.wickets++;
     }
 
-    public void incrementOver() {
-        this.currentOver++;
+    public void addWide(int runs) {
+        this.wides += runs;
+    }
+
+    public void addNoBall(int runs) {
+        this.noBalls += runs;
+    }
+
+    public void addBall() {
+        this.totalBalls++;
     }
 
     public Team getBattingTeam() {
@@ -40,12 +53,30 @@ public class Innings {
         return totalOvers;
     }
 
-    public int getCurrentOver() {
-        return currentOver;
+    public String getOvers() {
+        return totalBalls/6 + "." + totalBalls%6;
+    }
+
+    public double getRunRate()
+    {
+        if(totalBalls == 0) return 0;
+        return (totalRuns*6.0) / totalBalls;
     }
 
     public int getWickets() {
         return wickets;
+    }
+
+    public int getWides() {
+        return wides;
+    }
+
+    public int getNoBalls() {
+        return noBalls;
+    }
+
+    public int getWidesAndNoBalls() {
+        return wides + noBalls;
     }
 
     public int getTotalRuns() {

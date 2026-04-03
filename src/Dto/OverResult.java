@@ -1,6 +1,6 @@
 package Dto;
 
-import Entity.Player;
+import Entity.Team.Player;
 
 public class OverResult {
 

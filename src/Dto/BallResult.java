@@ -1,6 +1,6 @@
 package Dto;
 
-import Entity.BallType;
+import Entity.Match.BallType;
 
 public class BallResult {
 

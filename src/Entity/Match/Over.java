@@ -1,4 +1,4 @@
-package Entity;
+package Entity.Match;
 
 import java.util.List;
 
